@@ -98,7 +98,6 @@ class _HomeScreenState extends State<HomeScreen> {
       }
     }
   }
-
   void updatePolyline(LatLng currentPoint) {
     polyLinePoints.add(currentPoint);
     _polyLines.clear();

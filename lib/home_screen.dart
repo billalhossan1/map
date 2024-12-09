@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
@@ -26,11 +25,6 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   @override
-  void dispose() {
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -46,9 +40,9 @@ class _HomeScreenState extends State<HomeScreen> {
               onMapCreated: (GoogleMapController controller) {
                 mapController = controller;
               },
-        mapType: MapType.normal,
-        zoomControlsEnabled: true,
-        zoomGesturesEnabled: true,
+              mapType: MapType.normal,
+              zoomControlsEnabled: true,
+              zoomGesturesEnabled: true,
               myLocationEnabled: true,
               markers: _markers,
               polylines: _polyLines,
@@ -74,6 +68,12 @@ class _HomeScreenState extends State<HomeScreen> {
     if (isGranted) {
       final isServiceEnabled = await _checkGpsServiceEnable();
       if (isServiceEnabled) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Your Location Is Detected'),
+            duration: Duration(seconds: 3),
+          ),
+        );
         Geolocator.getPositionStream(
             locationSettings: const LocationSettings(
           accuracy: LocationAccuracy.high,
@@ -92,6 +92,7 @@ class _HomeScreenState extends State<HomeScreen> {
       final result = await _requestPermission();
       if (result) {
         _getCurrentLocation();
+
       } else {
         Geolocator.openAppSettings();
       }
@@ -110,7 +111,6 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
   }
-
 
   void _addMarker(LatLng latLng) {
     _markers.clear();
